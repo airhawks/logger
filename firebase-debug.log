@@ -1,0 +1,158 @@
+[debug] [2018-04-06T15:42:07.929Z] ----------------------------------------------------------------------
+[debug] [2018-04-06T15:42:07.934Z] Command:       /Users/amit.dh/.nvm/versions/node/v6.11.5/bin/node /usr/local/bin/firebase deploy --only functions
+[debug] [2018-04-06T15:42:07.935Z] CLI Version:   3.18.1
+[debug] [2018-04-06T15:42:07.935Z] Platform:      darwin
+[debug] [2018-04-06T15:42:07.935Z] Node Version:  v6.11.5
+[debug] [2018-04-06T15:42:07.937Z] Time:          Fri Apr 06 2018 21:12:07 GMT+0530 (IST)
+[debug] [2018-04-06T15:42:07.937Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2018-04-06T15:42:07.954Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2018-04-06T15:42:07.954Z] > authorizing via signed-in user
+[debug] [2018-04-06T15:42:07.956Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/logger-260e7  
+  
+ Fri Apr 06 2018 21:12:07 GMT+0530 (IST)
+[debug] [2018-04-06T15:42:09.355Z] <<< HTTP RESPONSE 200
+[debug] [2018-04-06T15:42:09.356Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/logger-260e7/tokens  
+  
+ Fri Apr 06 2018 21:12:09 GMT+0530 (IST)
+[debug] [2018-04-06T15:42:10.427Z] <<< HTTP RESPONSE 200
+[warn] ⚠  functions: package.json indicates an outdated version of firebase-functions.
+ Please upgrade using npm install --save firebase-functions@latest in your functions directory.
+[warn] ⚠  functions: Please note that there will be breaking changes when you upgrade.
+ Go to https://firebase.google.com/docs/functions/beta-v1-diff to learn more.
+[info] 
+[info] === Deploying to 'logger-260e7'...
+[info] 
+[info] i  deploying functions
+[info] Running command: npm --prefix "$RESOURCE_DIR" run lint
+[info] ✔  functions: Finished running predeploy script.
+[debug] [2018-04-06T15:42:20.085Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "lint": "eslint .",
+    "serve": "clear && firebase serve --only functions",
+    "shell": "firebase experimental:functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "dependencies": {
+    "@google-cloud/storage": "^1.6.0",
+    "child-process-promise": "^2.2.1",
+    "combined-stream": "^1.0.6",
+    "cors": "^2.8.4",
+    "express": "^4.16.3",
+    "express-promise": "^0.4.0",
+    "firebase-admin": "~5.8.1",
+    "firebase-functions": "^0.8.2",
+    "fs": "0.0.1-security",
+    "os": "^0.1.1",
+    "path": "^0.12.7"
+  },
+  "devDependencies": {
+    "eslint": "^4.12.0",
+    "eslint-plugin-promise": "^3.6.0"
+  },
+  "private": true
+}
+[info] i  functions: ensuring necessary APIs are enabled...
+[debug] [2018-04-06T15:42:20.087Z] >>> HTTP REQUEST GET https://servicemanagement.googleapis.com/v1/services/cloudfunctions.googleapis.com/projectSettings/logger-260e7?view=CONSUMER_VIEW  
+  
+ Fri Apr 06 2018 21:12:20 GMT+0530 (IST)
+[debug] [2018-04-06T15:42:20.087Z] >>> HTTP REQUEST GET https://servicemanagement.googleapis.com/v1/services/runtimeconfig.googleapis.com/projectSettings/logger-260e7?view=CONSUMER_VIEW  
+  
+ Fri Apr 06 2018 21:12:20 GMT+0530 (IST)
+[debug] [2018-04-06T15:42:21.886Z] <<< HTTP RESPONSE 200
+[info] ✔  functions: all necessary APIs are enabled
+[debug] [2018-04-06T15:42:21.918Z] <<< HTTP RESPONSE 200
+[debug] [2018-04-06T15:42:21.919Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/logger-260e7  
+  
+ Fri Apr 06 2018 21:12:21 GMT+0530 (IST)
+[debug] [2018-04-06T15:42:23.412Z] <<< HTTP RESPONSE 200
+[debug] [2018-04-06T15:42:23.413Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/540925359961:getServerAppConfig  
+  
+ Fri Apr 06 2018 21:12:23 GMT+0530 (IST)
+[debug] [2018-04-06T15:42:24.028Z] <<< HTTP RESPONSE 200
+[info] i  functions: preparing functions directory for uploading...
+[debug] [2018-04-06T15:42:24.031Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/logger-260e7/configs  
+  
+ Fri Apr 06 2018 21:12:24 GMT+0530 (IST)
+[debug] [2018-04-06T15:42:24.436Z] <<< HTTP RESPONSE 200
+[info] i  functions: packaged functions (46.74 KB) for uploading
+[debug] [2018-04-06T15:42:25.732Z] >>> HTTP REQUEST POST https://cloudfunctions.googleapis.com/v1/projects/logger-260e7/locations/us-central1/functions:generateUploadUrl  
+  
+ Fri Apr 06 2018 21:12:25 GMT+0530 (IST)
+[debug] [2018-04-06T15:42:26.179Z] <<< HTTP RESPONSE 200
+[debug] [2018-04-06T15:42:26.179Z] >>> HTTP REQUEST PUT https://storage.googleapis.com/gcf-upload-us-central1-acc907b6-5779-4efe-95e2-c40c55f8b22e/2c6d8852-bb35-42fd-8943-dc9489c7fb9c.zip?GoogleAccessId=540925359961@cloudservices.gserviceaccount.com&Expires=1523031146&Signature=y%2F0aoqrsI3ymf4uR0dweVUYCZWJvC7evbzCdiFU7u4IqGVSgLQDWSRyzmJX71kjAxM%2BW6xmNwGA%2FZ31oNdq%2B70fCo5D8cGDQuOA74nKcyR0f05YbQkZp6d8lW9s6ihYFzBzrJQbiA3bxqMUlg%2BwK6JFapJ2aTyyD%2BMdj%2Fg4ZS0zQJXGa33kaVtCRoJAZBaui%2Bt4Q%2BfAwu9PPf4juw4v06QkXs46qXv5UIpS27TH1Rfar4XsfYjwN5WjTQPvX2lRwNHpXgvMyHwBWHaViOjdX%2FbpxEIzUKDb7VDZEdrcIHoBo3xpqb61Qj1kAT9s%2F%2F57ab6vGDEhBHyzdsqyl6bUSvw%3D%3D  
+ ReadStream {
+  _readableState: 
+   ReadableState {
+     objectMode: false,
+     highWaterMark: 65536,
+     buffer: BufferList { head: [Object], tail: [Object], length: 1 },
+     length: 47860,
+     pipes: null,
+     pipesCount: 0,
+     flowing: null,
+     ended: true,
+     endEmitted: false,
+     reading: false,
+     sync: false,
+     needReadable: false,
+     emittedReadable: true,
+     readableListening: false,
+     resumeScheduled: false,
+     defaultEncoding: 'utf8',
+     ranOut: false,
+     awaitDrain: 0,
+     readingMore: false,
+     decoder: null,
+     encoding: null },
+  readable: true,
+  domain: null,
+  _events: { end: [Function] },
+  _eventsCount: 1,
+  _maxListeners: undefined,
+  path: '/var/folders/h7/35j4mn497wbdv5g6fv1jsfxc0wcp4k/T/firebase-functions-11519PqaP28oBrd2X.zip',
+  fd: 19,
+  flags: 'r',
+  mode: 438,
+  start: undefined,
+  end: undefined,
+  autoClose: true,
+  pos: undefined,
+  bytesRead: 47860 } 
+ Fri Apr 06 2018 21:12:26 GMT+0530 (IST)
+[debug] [2018-04-06T15:42:27.251Z] <<< HTTP RESPONSE 200
+[info] ✔  functions: functions folder uploaded successfully
+[debug] [2018-04-06T15:42:27.254Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/projects/logger-260e7/locations/us-central1/functions  
+  
+ Fri Apr 06 2018 21:12:27 GMT+0530 (IST)
+[debug] [2018-04-06T15:42:27.919Z] <<< HTTP RESPONSE 200
+[info] i  functions: updating function widgets...
+[debug] [2018-04-06T15:42:27.924Z] Trigger is:  {"httpsTrigger":{}}
+[debug] [2018-04-06T15:42:27.928Z] >>> HTTP REQUEST PATCH https://cloudfunctions.googleapis.com/v1/projects/logger-260e7/locations/us-central1/functions/widgets 
+query params: {"updateMask":"sourceUploadUrl,name,labels,httpsTrigger"} 
+ { sourceUploadUrl: 'https://storage.googleapis.com/gcf-upload-us-central1-acc907b6-5779-4efe-95e2-c40c55f8b22e/2c6d8852-bb35-42fd-8943-dc9489c7fb9c.zip?GoogleAccessId=540925359961@cloudservices.gserviceaccount.com&Expires=1523031146&Signature=y%2F0aoqrsI3ymf4uR0dweVUYCZWJvC7evbzCdiFU7u4IqGVSgLQDWSRyzmJX71kjAxM%2BW6xmNwGA%2FZ31oNdq%2B70fCo5D8cGDQuOA74nKcyR0f05YbQkZp6d8lW9s6ihYFzBzrJQbiA3bxqMUlg%2BwK6JFapJ2aTyyD%2BMdj%2Fg4ZS0zQJXGa33kaVtCRoJAZBaui%2Bt4Q%2BfAwu9PPf4juw4v06QkXs46qXv5UIpS27TH1Rfar4XsfYjwN5WjTQPvX2lRwNHpXgvMyHwBWHaViOjdX%2FbpxEIzUKDb7VDZEdrcIHoBo3xpqb61Qj1kAT9s%2F%2F57ab6vGDEhBHyzdsqyl6bUSvw%3D%3D',
+  name: 'projects/logger-260e7/locations/us-central1/functions/widgets',
+  labels: { 'deployment-tool': 'cli-firebase' },
+  httpsTrigger: {} } 
+ Fri Apr 06 2018 21:12:27 GMT+0530 (IST)
+[debug] [2018-04-06T15:42:28.633Z] <<< HTTP RESPONSE 200
+[debug] [2018-04-06T15:42:28.636Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/projects/logger-260e7/locations/us-central1/functions  
+  
+ Fri Apr 06 2018 21:12:28 GMT+0530 (IST)
+[debug] [2018-04-06T15:42:29.352Z] <<< HTTP RESPONSE 200
+[debug] [2018-04-06T15:42:29.354Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/bG9nZ2VyLTI2MGU3L3VzLWNlbnRyYWwxL3dpZGdldHMvU1JMX2czc1ZCZG8  
+  
+ Fri Apr 06 2018 21:12:29 GMT+0530 (IST)
+[debug] [2018-04-06T15:42:30.069Z] <<< HTTP RESPONSE 200
+[debug] [2018-04-06T15:42:32.071Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/bG9nZ2VyLTI2MGU3L3VzLWNlbnRyYWwxL3dpZGdldHMvU1JMX2czc1ZCZG8  
+  
+ Fri Apr 06 2018 21:12:32 GMT+0530 (IST)
+[debug] [2018-04-06T15:42:32.740Z] <<< HTTP RESPONSE 200
+[debug] [2018-04-06T15:42:34.743Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/bG9nZ2VyLTI2MGU3L3VzLWNlbnRyYWwxL3dpZGdldHMvU1JMX2czc1ZCZG8  
+  
+ Fri Apr 06 2018 21:12:34 GMT+0530 (IST)
+[debug] [2018-04-06T15:42:35.188Z] <<< HTTP RESPONSE 200

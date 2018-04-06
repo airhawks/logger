@@ -20,11 +20,13 @@ const combineAllFiles = (filename) => {
         data = data.map(x => x.name);
         data = data.filter(name => !name.includes('final'));
 
+        // get first 32 files for now
         if(data.length === 1){    
             return bucket.file(data[0]).move(filename + 'final.txt')
                 .then(x => x[0]);
         }
-        
+        data = data.slice(0, 30);
+
         const sourceFiles = data.map( name => bucket.file(name));
 
         return bucket.combine(
@@ -100,7 +102,8 @@ const deleteExtraFiles = (name) => {
 
 const deleteOldFiles = () => {
     return getAllFilesFromStream().then((data) => {
-        const now = Date.now(), oneweek = 2 * 7 * 24 * 60 * 60 * 1000;
+        const now = Date.now(),
+         oneweek = 7 * 24 * 60 * 60 * 1000;
         data = data.filter(file => {
             const name = file.name;
             const timestamp = Number(name.split(separator)[2]);
