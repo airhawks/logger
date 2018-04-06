@@ -1,6 +1,6 @@
 
 const gcs = require('@google-cloud/storage')();
-
+const separator = '_|_';
 
 const bucket = gcs.bucket('logger-260e7.appspot.com');
 
@@ -8,10 +8,135 @@ const getAllFiles = (prefix) => {
     const options = {
         prefix: prefix || "",
       };
+
     return bucket.getFiles(options)
         .then(results => {
             return results[0];
         });
+};
+
+const combineAllFiles = (filename) => {
+    return getAllFiles(filename).then((data)=>{
+        data = data.map(x => x.name);
+        data = data.filter(name => !name.includes('final'));
+
+        if(data.length === 1){    
+            return bucket.file(data[0]).move(filename + 'final.txt')
+                .then(x => x[0]);
+        }
+        
+        const sourceFiles = data.map( name => bucket.file(name));
+
+        return bucket.combine(
+            sourceFiles,
+            bucket.file(filename + 'final.txt')
+        ).then(data => {
+            return data[0];
+        }).catch(e => {
+            return bucket.combine(
+                sourceFiles,
+                bucket.file(filename + 'final.txt')
+            ).then(data => {
+                return data[0];
+            }).catch(e => { 
+                throw new Error(e)
+            });
+        });
+    });
+};
+
+const combineAllFilesToFinal = () => {
+    
+    
+    return getAllFilesFromStream().then((data) => {
+        let uniqueFiles = {};
+        
+
+        data = data.filter(file => !file.name.includes('final'));
+
+        data.forEach(file => {
+            const parts = file.name.split(separator);
+            const key = [parts[0], parts[1], parts[2]].join(separator);
+            uniqueFiles[key] = true
+        });
+        return Object.keys(uniqueFiles);
+    }).then(fileNames => {
+        setTimeout((data) => {
+            var count = fileNames.length;
+            fileNames.forEach(name => {
+                // console.log(name);
+                --count;
+                setTimeout(()=>{
+                    combineAllFiles(name).then(file => {
+                        console.log(file.name, " now deleting");
+                        
+                        deleteExtraFiles(name);
+                        
+                    });
+                }, 5000 * (fileNames.length - count));
+            });    
+        });
+
+        return "will be done after " + fileNames.length * 5 /60 + "minutes";
+    });
+
+}
+
+const deleteExtraFiles = (name) => {
+    name = name || "";
+    return getAllFilesFromStream(name).then((data) => {
+        data = data.filter(file => !file.name.includes('final'));
+
+        return data.map(x => x.name);
+    }).then((fileNames) => {
+        let count  = fileNames.length;
+        fileNames.forEach( name => {
+            bucket.file(name).delete().then(x => console.log(--count)).catch(e => {
+                bucket.file(name).delete().then(x => console.log(--count));
+            });
+        });
+    });
+}
+
+const renameAllFiles = () => {
+    return getAllFilesFromStream().then((data) => {
+        data = data.filter(file => file.name.includes('final'));
+        return data.map(x => x.name);
+    }).then((fileNames) => {
+        let count  = fileNames.length;
+        fileNames.forEach( name => {
+            --count;
+            const run = () => {
+                const x = count;
+                setTimeout( () => {
+                    bucket.file(name).move(name.replace('final', '_|_0')).then(() => console.log(x));
+                }, 50 * (fileNames.length - count));
+            };
+            run();
+        });
+        return "will be done after " + fileNames.length * 0.05 /60 + "minutes";
+    });
+}
+
+const getAllFilesFromStream = (prefix) => {
+    const options = {
+        prefix: prefix || ''
+    };
+    let files = [];
+    return new Promise( (resolve, reject) => {
+        bucket.getFilesStream(options)
+        .on('error', (e) => {
+            console.error(e);
+            reject(e);
+        })
+        .on('data', (file) => {
+            files.push(file);
+        })
+        .on('end', () => {
+            resolve(files);
+        });
+    }); 
+    
 };
 
 let storage = {
@@ -40,31 +165,12 @@ let storage = {
             return data[0];
           });
     },
-    uploadTest: () =>{
-        return bucket.upload('/Users/amit.dh/Desktop/flock_dev/logger/functions/test.txt');
-    },
     getAllFiles: getAllFiles,
-    combineAllFiles: (filename) => {
-        return getAllFiles(filename).then((data)=>{
-            data = data.map(x => x.name);
-            data = data.filter(name => !name.includes('final'));
-
-            if(data.length === 1){    
-                return bucket.file(data[0]).createReadStream();
-            }
-            
-            const sourceFiles = data.map( name => bucket.file(name));
-
-            return bucket.combine(
-                sourceFiles,
-                bucket.file(filename + 'final.txt')
-            ).then(data => {
-                return data[0].createReadStream();
-            }).catch(e => {
-                throw new Error(e)
-            });
-        });
-    }
+    combineAllFiles: combineAllFiles,
+    getAllFilesFromStream: getAllFilesFromStream,
+    combineAllFilesToFinal: combineAllFilesToFinal,
+    deleteExtraFiles: deleteExtraFiles,
+    renameAllFiles: renameAllFiles
 };
 
 

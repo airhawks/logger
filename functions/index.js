@@ -107,8 +107,9 @@ const getAllFilesFromQuery = (req, res) => {
     const jid = req.params.jid || "";
     const sid = req.params.sid || "";
     const queryString = jid + separator + sid;
-    storage.getAllFiles(queryString)
+    storage.getAllFilesFromStream(queryString)
         .then((data)=>{
+            // res.send({data});
             data = data.map(x => x.name)
                 .filter(name => !name.includes('final'));
 
@@ -120,7 +121,7 @@ const getAllFilesFromQuery = (req, res) => {
 
 const getAllFilesForRoom = (req, res) => {
     const sid = req.params.sid || "";
-    storage.getAllFiles()
+    storage.getAllFilesFromStream()
         .then((data)=>{
             data = data.map(x => x.name)
                 .filter(name => !name.includes('final') && name.includes(sid));
@@ -133,7 +134,9 @@ const getAllFilesForRoom = (req, res) => {
 
 const getLogFile = (req, res) => {
     const fileName = req.params.fileName;
-    storage.combineAllFiles(fileName).then(stream => {
+    storage.combineAllFiles(fileName)
+        .then(data => data.createReadStream())
+        .then(stream => {
         
         stream.on('error', (err) => {
             res.send(err);
@@ -152,9 +155,32 @@ const getLogFile = (req, res) => {
 const downloadFile = (req, res) => {
     const fileName = req.params.fileName;
     storage.downloadFile(fileName)
-        .then(data => {console.log(data);return res.send(data)})
+        .then(data => {return res.send(data)})
         .catch(data => res.send(data));
 };
+
+const combineAllFilesToFinal = (req, res) => {
+    storage.combineAllFilesToFinal()
+        .then(data => {return res.send(data)})
+        .catch(data => res.send(data));
+};
+
+const deleteFiles = (req, res) => {
+
+    //DONOT run with out combineAllFilesToFinal. 
+    storage.deleteExtraFiles()
+        .then(data => {return res.send(data)})
+        .catch(data => res.send(data));
+};
+
+const renameAllFiles = (req, res) => {
+
+    //DONOT run with out combineAllFilesToFinal. 
+    storage.renameAllFiles()
+        .then(data => {return res.send(data)})
+        .catch(data => res.send(data));
+};
+
 
 
 app.get('/getLog/jid/:jid/roomSid/:sid', getAllFilesFromQuery);
@@ -163,8 +189,10 @@ app.get('/getLog/roomSid/:sid', getAllFilesForRoom);
 
 app.get('/get/:fileName', getLogFile);
 app.get('/download/:fileName', downloadFile);
+app.get('/compress', combineAllFilesToFinal);
 
-
+app.get('/delete', deleteFiles);
+app.get('/rename', renameAllFiles);
 
 // Expose Express API as a single Cloud Function:
 exports.widgets = functions.https.onRequest(app);

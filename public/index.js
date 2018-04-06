@@ -1,6 +1,6 @@
 
-const apiUrl = 'https://us-central1-logger-260e7.cloudfunctions.net/widgets/';
-// const apiUrl = 'http://localhost:3001/logger-260e7/us-central1/widgets/';
+// const apiUrl = 'https://us-central1-logger-260e7.cloudfunctions.net/widgets/';
+const apiUrl = 'http://localhost:3002/logger-260e7/us-central1/widgets/';
 
 
 
@@ -23,7 +23,6 @@ function getAllLogs(){
     if(guid){
         if(roomSid){
             fetch(apiUrl + `getLog/jid/${guid}/roomSid/${roomSid}`, {
-              method: 'GET',
               mode: 'cors'
             })
             .then(x => {
@@ -31,7 +30,6 @@ function getAllLogs(){
             });
         }else{
             fetch(apiUrl + `getLog/jid/${guid}`, {
-                method: 'GET',
                 mode: 'cors'
               })
             .then(x => {
@@ -40,7 +38,6 @@ function getAllLogs(){
         }
     }else{
         fetch(apiUrl + `getLog/roomSid/${roomSid}`, {
-            method: 'GET',
             mode: 'cors'
           })
         .then(x => {
