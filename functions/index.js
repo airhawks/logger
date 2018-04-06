@@ -168,7 +168,7 @@ const combineAllFilesToFinal = (req, res) => {
 const deleteFiles = (req, res) => {
 
     //DONOT run with out combineAllFilesToFinal. 
-    storage.deleteExtraFiles()
+    storage.deleteOldFiles()
         .then(data => {return res.send(data)})
         .catch(data => res.send(data));
 };
@@ -191,8 +191,9 @@ app.get('/get/:fileName', getLogFile);
 app.get('/download/:fileName', downloadFile);
 app.get('/compress', combineAllFilesToFinal);
 
-app.get('/delete', deleteFiles);
+app.get('/deleteOld', deleteFiles);
 app.get('/rename', renameAllFiles);
+
 
 // Expose Express API as a single Cloud Function:
 exports.widgets = functions.https.onRequest(app);

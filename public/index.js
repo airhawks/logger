@@ -1,6 +1,6 @@
 
-// const apiUrl = 'https://us-central1-logger-260e7.cloudfunctions.net/widgets/';
-const apiUrl = 'http://localhost:3002/logger-260e7/us-central1/widgets/';
+const apiUrl = 'https://us-central1-logger-260e7.cloudfunctions.net/widgets/';
+// const apiUrl = 'http://localhost:3002/logger-260e7/us-central1/widgets/';
 
 
 

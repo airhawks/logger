@@ -98,6 +98,31 @@ const deleteExtraFiles = (name) => {
     });
 }
 
+const deleteOldFiles = () => {
+    return getAllFilesFromStream().then((data) => {
+        const now = Date.now(), oneweek = 2 * 7 * 24 * 60 * 60 * 1000;
+        data = data.filter(file => {
+            const name = file.name;
+            const timestamp = Number(name.split(separator)[2]);
+            return timestamp + oneweek < now;
+        });
+        return data.map(x => x.name);
+    }).then((fileNames) => {
+        let count  = fileNames.length;
+        fileNames.forEach( name => {
+            --count;
+            const run = () => {
+                const x = count;
+                setTimeout( () => {
+                    bucket.file(name).delete().then(() => console.log(x));
+                }, 50 * (fileNames.length - count));
+            };
+            run();
+        });
+        return "will be done after " + fileNames.length * 0.05 /60 + "minutes";
+    });
+}
+
 const renameAllFiles = () => {
     return getAllFilesFromStream().then((data) => {
         data = data.filter(file => file.name.includes('final'));
@@ -169,7 +194,7 @@ let storage = {
     combineAllFiles: combineAllFiles,
     getAllFilesFromStream: getAllFilesFromStream,
     combineAllFilesToFinal: combineAllFilesToFinal,
-    deleteExtraFiles: deleteExtraFiles,
+    deleteOldFiles: deleteOldFiles,
     renameAllFiles: renameAllFiles
 };
 
