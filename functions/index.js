@@ -85,8 +85,8 @@ const mapData = (data) => {
     data.forEach(name => {
         const parts = name.split(separator);
         uniqueFiles[parts[2]] = {
-            roomSid: parts[1],
-            jid: parts[0]
+            roomSid: parts[0],
+            jid: parts[1]
         };
     });
     
@@ -97,7 +97,7 @@ const mapData = (data) => {
             return {
                 roomSID: roomSid,
                 timestamp: (new Date(Number(timestamp))).toString(),
-                url: downloadUrl + [jid, roomSid, timestamp].join(separator),
+                url: downloadUrl + [roomSid, jid, timestamp].join(separator),
                 jid: jid
             }
         });
@@ -135,21 +135,24 @@ const getAllFilesForRoom = (req, res) => {
 const getLogFile = (req, res) => {
     const fileName = req.params.fileName;
     storage.combineAllFiles(fileName)
-        .then(data => data.createReadStream())
-        .then(stream => {
+        .then((data) => {
+            storage.downloadFile(data.name)
+            .then(data => {return res.send(data)})
+        // .then(data => data.createReadStream())
+        // .then(stream => {
         
-        stream.on('error', (err) => {
-            res.send(err);
-        })
-        .on('response', (response) => {
-        // Server connected and responded with the specified status and headers.
-        })
-        .on('end', () => {
-        // The file is fully downloaded.
-        }).pipe(res);
-        
-        return;
-    }).catch(err => res.send(err));
+        //     stream.on('error', (err) => {
+        //         res.send(err);
+        //     })
+        //     .on('response', (response) => {
+        //     // Server connected and responded with the specified status and headers.
+        //     })
+        //     .on('end', () => {
+        //     // The file is fully downloaded.
+        //     }).pipe(res);
+            
+        //     return;
+        }).catch(err => res.send(err));
 };
 
 const downloadFile = (req, res) => {

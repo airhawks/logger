@@ -34,12 +34,13 @@
         <div id="message">
         <h1>Enter either guid or room Id or both</h1>
         <form>
+            <!-- This is reverse to avoid lot of code change -->
             <div>
-                <label>User Guid:</label>
+                <label>Room Sid:</label>
                 <input id="userGuid"/>
             </div>
             <div>
-                <label>Room Sid:</label>
+                <label>User Guid:</label>
                 <input id="roomSid"/>
             </div>
             <button type="button" onclick="getAllLogs()">Find Logs</button>
