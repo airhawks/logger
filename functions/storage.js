@@ -19,6 +19,11 @@ const combineAllFiles = (filename) => {
     return getAllFiles(filename).then((data)=>{
         data = data.map(x => x.name);
         data = data.filter(name => !name.includes('final'));
+        data.sort((a, b) => {
+            const x = a.split(separator)[3],
+                y = b.split(separator)[3];
+            return Number(x) - Number(y);
+        });
 
         // get first 32 files for now
         if(data.length === 1){    

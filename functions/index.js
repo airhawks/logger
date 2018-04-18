@@ -82,6 +82,12 @@ app.get('/allfiles', (req, res) => {
 const mapData = (data) => {
     let uniqueFiles = {};
 
+    data.sort((a, b) => {
+        const x = a.split(separator)[3],
+            y = b.split(separator)[3];
+        return Number(x) - Number(y);
+    });
+
     data.forEach(name => {
         const parts = name.split(separator);
         uniqueFiles[parts[2]] = {
