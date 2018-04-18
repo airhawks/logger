@@ -83,6 +83,8 @@ const mapData = (data) => {
     let uniqueFiles = {};
 
     data.sort((a, b) => {
+        a = a.replace('.txt', '');
+        b = b.replace('.txt', '');
         const x = a.split(separator)[3],
             y = b.split(separator)[3];
         return Number(x) - Number(y);

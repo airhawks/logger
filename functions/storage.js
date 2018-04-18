@@ -20,6 +20,8 @@ const combineAllFiles = (filename) => {
         data = data.map(x => x.name);
         data = data.filter(name => !name.includes('final'));
         data.sort((a, b) => {
+            a = a.replace('.txt', '');
+            b = b.replace('.txt', '');
             const x = a.split(separator)[3],
                 y = b.split(separator)[3];
             return Number(x) - Number(y);
