@@ -107,10 +107,56 @@ const deleteExtraFiles = (name) => {
     });
 }
 
+
+const getAllFilesPaginate = (prefix) => {
+    const options = {
+        autoPaginate: false
+      };
+    let allFiles = [];
+
+    let start = Date.now();
+    
+    return new Promise(((resolve, reject)=> {
+        var oneweek = 3 * 24 * 60 * 60 * 1000;
+        var callback = function(e, files, nextQuery, apiResponse) {
+            allFiles = allFiles.concat(files.filter(file => {
+                const name = file.name;
+                const timestamp = Number(name.split(separator)[2]);
+                return timestamp + oneweek < start;
+            }));
+            console.log(allFiles.length)
+
+            if(e){
+                resolve(allFiles);
+            }
+            if(allFiles.length > 5000) {
+                resolve(allFiles);
+                return;
+            }
+            if (nextQuery) {
+                // More results exist.
+                bucket.getFiles(nextQuery, callback);
+            }else{
+                console.log(allFiles.length)
+                resolve(allFiles);
+            }
+        };
+        
+        bucket.getFiles({
+        autoPaginate: false
+        }, callback);
+    }));
+
+};
+
+
+
 const deleteOldFiles = () => {
-    return getAllFilesFromStream().then((data) => {
+
+    getAllFilesPaginate()
+    .then((data) => {
         const now = Date.now(),
-         oneweek = 7 * 24 * 60 * 60 * 1000;
+         oneweek = 3 * 24 * 60 * 60 * 1000;
         data = data.filter(file => {
             const name = file.name;
             const timestamp = Number(name.split(separator)[2]);
@@ -124,13 +170,20 @@ const deleteOldFiles = () => {
             const run = () => {
                 const x = count;
                 setTimeout( () => {
-                    bucket.file(name).delete().then(() => console.log(x));
-                }, 50 * (fileNames.length - count));
+                    bucket.file(name).delete().then(() => {
+                        console.log(x)
+                        if(x === 0){
+                            deleteOldFiles();
+                        }
+                    });
+                }, 5 * (fileNames.length - count));
             };
             run();
         });
-        return "will be done after " + fileNames.length * 0.05 /60 + "minutes";
+        return "will be done after " + fileNames.length * 0.005 /60 + "minutes";
     });
+
+    return Promise.resolve("pata nhi kab hoga");
 }
 
 const renameAllFiles = () => {

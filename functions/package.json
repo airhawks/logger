@@ -13,6 +13,7 @@
     "@google-cloud/storage": "^1.6.0",
     "child-process-promise": "^2.2.1",
     "combined-stream": "^1.0.6",
+    "connect-timeout": "^1.9.0",
     "cors": "^2.8.4",
     "express": "^4.16.3",
     "express-promise": "^0.4.0",
